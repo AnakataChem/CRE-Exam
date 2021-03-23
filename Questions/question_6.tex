@@ -1,0 +1,47 @@
+\begin{question}
+A heterogeneously catalysed reaction of two gaseous reactants (\ch{A + B}) to the product C shows Langmuir-Hinshelwood kinetics. In an experiment, the partial pressure of component B is kept constant, while that of component A is steadily increased. Describe the course of the reaction rate and explain it using a suitable formula.  For this purpose, assign the areas of the curve exactly to the explained cases (in the diagram)! 
+
+\end{question}
+\begin{solution}
+The Langmuir-Hinshelwood model states that both reactants are chemisorpt on the surface of the catalyst.
+%%
+\begin{equation*}
+\ch{A_{ch} + B_{ch} -> C}
+\end{equation*}
+%%
+The reaction rate can be described by:
+%%
+\begin{equation}
+r = k * \Theta_A * \Theta_B
+\end{equation}
+%%
+The coverage $\Theta$ can be calculated by:
+%%
+\begin{equation}
+\Theta_A = \frac{K_A * p_A}{1 + K_A * p_A + K_B * p_B} \qquad\qquad \Theta_B = \frac{K_B * p_B}{1 + K_A * p_A + K_B * p_B} 
+\end{equation}
+%%
+Thus the reaction rate can be rearranged to:
+%%
+\begin{equation}\label{eqn6:rate}
+r = k * \frac{K_A * p_A * K_B * p_B}{(1 + K_A * p_A + K_B * p_B)^2}
+\end{equation}
+%%
+In the case of a low partial pressure of A $(K_A * p_A \ll 1 + K_B * p_B)$, Eq. \ref{eqn6:rate} can be simplified to:
+%%
+\begin{equation}
+r = \frac{K_A * K_B * p_B}{(1 + K_B * p_B)^2}*p_A = k' * p_A 
+\end{equation}
+%%
+The rate behaves 1st order in $p_A$. In the case of a heigh partial pressure of A $(K_A * p_A \gg 1 + K_B * p_B)$, Eq. \ref{eqn6:rate} can be simplified to:
+%%
+\begin{equation}
+r = \frac{K_B * p_B}{K_A} * \frac{1}{p_A}
+\end{equation}
+%%
+The rate behaves -1st order in $p_A$.
+%%
+\begin{center}
+\input{Plots/plot_LH.tex}
+\end{center}
+\end{solution}

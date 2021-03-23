@@ -1,0 +1,27 @@
+\begin{question}
+For a zero order reaction, the following applies: $X = Da$
+%%
+\renewcommand{\labelenumi}{\alph{enumi})}
+\begin{enumerate}
+ \item What conversion do you expect with $Da = 2$
+ \item Is the Damköhler number at this reaction order depended on the temperature?
+ \item How do you explain this? Use equations for the explanation!
+\end{enumerate}
+\end{question}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Start Python calculations %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{pycode}
+
+\end{pycode}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% End Python calculations %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{solution}
+The conversion can only be \SI{100}{\percent} even if $Da = 2$. The higher Damköhler number can be attributed to the temperature.
+%%
+\begin{equation}
+Da = \frac{-\nu_A * r_0 * \tau}{c_{A0}}
+\end{equation}
+The reaction rate $r_0$ at the begin of the reaction $(X = 0)$:
+%%
+\begin{equation}
+r_0 = k(T) = k_{\infty} * \exp\left(\frac{-E_A}{R * T}\right)
+\end{equation}
+\end{solution}

@@ -1,0 +1,48 @@
+\begin{question}
+During the execution of a radical polymerization at \SI{125}{\celsius} with an initial initiator concentration of $c_{I0} = \SI{0.001}{\mol\per\liter}$, the following kinetic data were determined: The rate constant of the initiator decomposition reaction $k_z = \SI{1.09e-11}{\per\second}$, the gross rate constant $k_{Br} = \SI{3.09e-3}{\liter\tothe{1\per 2}\per\mole\tothe{1\per 2}\per\second}$
+%
+\renewcommand{\labelenumi}{\alph{enumi})}
+\begin{enumerate}
+\item Calculate the polymerisation time until a monomer conversion of \SI{70}{\percent} is reached. Write down the formulae you used for this calculation.
+\end{enumerate}
+\end{question}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Start Python calculations %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{pycode}
+import numpy as np
+import sympy as sp
+
+t = sp.symbols('t', positive=True, real=True)
+
+# Given data
+T = 125 + 273.15 #K
+cI0 = 0.001 #mol/L
+kz = 1.09e-11 #s^-1
+kBr = 3.09e-3 #L^0.5 mol^-0.5 s^-1
+X = 0.7
+
+# Calculation of the polymerization time
+sol = sp.solve((2 * kBr * sp.sqrt(cI0)) / kz * (sp.exp(-kz * t / 2) - 1) - sp.log(1 - X), t)
+\end{pycode}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% End Python calculations %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{solution}
+The logarithmic ratio of the monomer concentration to the initial concentration can be calculated by (CRE exercise 6):
+%
+\begin{equation}\label{eqn2:ratio}
+\ln \left( \frac{c_M}{c_{M0}} \right) = \frac{2 * k_{Br} * \sqrt{c_{I0}}}{k_z} * \left[ \exp\left(\frac{-k_z * t}{2} \right) - 1 \right]
+\end{equation}
+%
+The conversion in constant reaction volume is defined by:
+%
+\begin{equation}
+X = \frac{c_{M0} - c_M}{c_{M0}} \Longrightarrow \frac{c_M}{c_{M0}} = 1 - X
+\end{equation}
+%
+Thus Eq. \ref{eqn2:ratio} can be rearranged to:
+%
+\begin{align}
+\begin{split}
+&\ln \left( 1 - X \right) = \frac{2 * k_{Br} * \sqrt{c_{I0}}}{k_z} * \left[ \exp\left(\frac{-k_z * t}{2} \right) - 1 \right]\\
+&\Longrightarrow t = -\frac{2}{k_z} * \ln \left[ \frac{\ln (1 - X) * k_z}{2 * k_{Br} * \sqrt{c_{I0}}} + 1 \right] = \pySI{sol[0]}{\second}
+\end{split} 
+\end{align}
+\end{solution}

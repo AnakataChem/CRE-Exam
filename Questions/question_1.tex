@@ -1,0 +1,68 @@
+\begin{question}
+In an indirectly cooled CSTR with a heat exchange surface of $F_W = \SI{7}{\square\meter}$, a strongly exothermic irreversible 1st order rection takes place. Initial investigations showed that the heat exchange surface must be increased by installing cooling coils inside the reactor so that the amount of heat produced can be sufficiently dissipated. The reactant is to be fed into the CSTR at a concentration of \SI{1600}{\mole\per\cubic\meter} with a volume flow of \SI{2.3}{\cubic\meter\per\hour}. The temperature of the feed mixture shall be $T_a = \SI{70}{\celsius}$. In the steady state, the operating temperature should be \SI{118}{\celsius}. The average coolant temperature $T_K$ should be \SI{95}{\celsius}. With the selected reaction conditions and operating parameters, a conversion of the reactant of \SI{98}{\percent} can be achieved. 
+
+Further material data: Heat transfer coefficient $k_W = \SI{4. 75e5}{\joule\per\square\meter\per\hour\per\kelvin}$, reaction enthalpy $\Delta H = \SI{-195}{\kilo\joule\per\mole}$, mean density $\rho = \SI{1800}{\kilo\gram\per\cubic\meter}$ and mean specific heat capacity $c_p = \SI{2200}{\joule\per\kelvin\per\kilo\gram}$.
+%
+\renewcommand{\labelenumi}{\alph{enumi})}
+\begin{enumerate}
+\item Determine the area that must be provided for additional heat dissipation by installing cooling coils. Establish the heat balance of the statinary CSTR. What is the total area for heat exchange.
+\item Give the relative cooling intensity (Stanton number) for the steady state. Also calculate the adiabatic temperature increase.
+\end{enumerate}
+\end{question}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Start Python calculations %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{pycode}
+import numpy as np
+import sympy as sp
+
+# Given data
+Fw = 7 #m^2
+cA0 = 1600 #mol/m^3
+Vdot = 2.3 #m^3/h
+Ta = 70 #°C
+T = 118 #°C
+Tk = 95 #°C
+X = 0.98 #%
+kW = 4.75e5 #J/(m^2 h K)
+DeltaH = -195 #kJ/mol
+rho = 1809 #kg/m^3
+cp = 2200 #J/(K kg)
+
+#Calculation of the adibatic temperature increase
+DeltaTad = (-1000 * DeltaH * cA0)/(rho * cp)
+
+#Calculation of the Stanton number
+St = (Ta - T + DeltaTad * X)/(T - Tk)
+
+#Calculation of the needed heat exchange surface
+FwNeed = (St * Vdot * rho * cp)/kW
+
+#Calculation of the heat exchange surface which has to be added
+FwAdd = FwNeed - Fw
+
+\end{pycode}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% End Python calculations %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{solution}
+The heat balance of the CSTR:
+%
+\begin{equation}\label{eqn1:HB}
+T - T_a + St*(T - T_k) = \Delta T_{ad} * X
+\end{equation}
+%
+The adiabatic temperature increase can be calculated by:
+%
+\begin{equation}
+\Delta T_{ad} = \frac{-\Delta H * c_{A0}}{-\nu_A * \rho * c_p} = \pySI{DeltaTad}{\kelvin} 
+\end{equation}
+%
+By rearranging Eq. \ref{eqn1:HB} the Stanton number can be calculated
+%
+\begin{equation}
+St = \frac{T_a - T + \Delta T_{ad} * X}{T - T_k} = \pyNum{St}
+\end{equation}
+%
+The heat exchange surface still to be installed can be calculated according to:
+%
+\begin{equation}
+F_{W,add} = \frac{St * \dot{V} * \rho * c_p}{k_W} - F_W = \pySI{FwAdd}{\square\meter}
+\end{equation}
+\end{solution}

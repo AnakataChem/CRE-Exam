@@ -1,0 +1,80 @@
+\begin{question}
+Butyl acetat shall be produced at \SI{100}{\celsius} from acetic acid and butanol with suphuric acid as catalyst.
+%%
+\begin{equation*}
+\ch{CH3COOH + C4H9OH -> CH3COOC4H9 + H2O}
+\end{equation*}
+%%
+After a first approximation, it is a 2nd order reaction: \\
+$r = k * c_A * c_B$ with $k = \SI{0.03}{\liter\per\mole\per\minute}$. The reaction should be terminated at a conversion of $X_A = 0.69$. The component react only in the desired form to form the butyl ester, so that the selectivity can be set to one. The production rate of the butyl ester should be \SI{109}{\kilo\gram\per\hour}. The dead time of the batch reactor for filling, heating, cooling and emptying is \SI{15}{\minute} (additional to the reaction time). The initial concentration of acetic acid is $c_{A0} = \SI{2}{\mole\per\liter}$ 
+\renewcommand{\labelenumi}{\alph{enumi})}
+\begin{enumerate}
+ \item Calculate the Damköhler number.
+ \item Calculate the residence time $\tau$.
+ \item Calculate the reaction volume $V_R$ of the batch reactor.
+\end{enumerate}
+\end{question}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Start Python calculations %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{pycode}
+# Given data
+Mp = 116 #g mol^-1
+Xa = 0.69
+Sp = 1
+mDot = 109 #kg h^-1
+k = 0.03 #L mol^-1 min^-1
+cA0 = 2 #mol/L
+tD = 15 #min
+
+# Calculation of the Damkoehler number
+Da = Xa/(1-Xa)
+
+# Calculation of the residence time
+tau = Da/(k * cA0)
+
+# Calculation of the reaction volume
+Vr = 1000/60 * mDot/Mp * (tau + tD)/(cA0*Sp*Xa)
+\end{pycode}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% End Python calculations %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{solution}
+The Damköhler number for a batch reactor and a reaction of 2nd order can be calculated by:
+%
+\begin{align}
+\begin{split}
+Da &= \int\limits_0^{X_A} \frac{1}{\Phi(X)}\;\mathrm{d}X = \int\limits_0^{X_A} \frac{1}{(1 - X)^2}\;\mathrm{d}X \\
+&= \frac{X_A}{1 - X_A} = \pyNum{Da}
+\end{split}
+\end{align}
+%%
+The residence time can be calculated by:
+%%
+\begin{equation}
+\tau = \frac{Da * c_{A0}}{-\nu_A * r_0} = \frac{Da}{-\nu_A * k * c_{A0}} = \pySI{tau}{\minute}
+\end{equation}
+%%
+The selectivity towards the product can be calculated by:
+%%
+\begin{equation}
+S_P = \frac{n_P - n_{P0}}{n_{A0} - n_A} * \frac{-\nu_A}{\nu_P} \Longrightarrow n_{A0} - n_A = \frac{n_P - n_{P0}}{S_P} * \frac{-\nu_A}{\nu_P}
+\end{equation}
+%%
+The conversion of educt A is defined by:
+%%
+\begin{align}
+\begin{split}
+&X_A = \frac{n_{A0} - n_A}{n_{A0}} = \frac{n_P - n_{P0}}{n_{A0} * S_P} * \frac{-\nu_A}{\nu_P}\\
+&\Longrightarrow n_P - n_{P0} = \frac{\nu_P}{-\nu_A} * n_{A0} * S_P * X_A
+\end{split}
+\end{align}
+%%
+The production rate is defined by:
+%%
+\begin{equation}\label{eqn3:dotn}
+\dot{n}_P = \frac{\dot{m}_P}{M_P} = \frac{n_P - n_{P0}}{\tau + t_d} = \frac{\nu_P}{-\nu_A} * n_{A0} * S_P * X_A * \frac{1}{\tau + t_d}
+\end{equation}
+%%
+With $n_{A0} = c_{A0} * V_R$ the reactor volume $V_R$ can be calculated by rearranging Eq. \ref{eqn3:dotn}:
+%%
+\begin{equation}
+V_R = \frac{\dot{m}_P}{M_P} * \frac{-\nu_A}{\nu_P} * \frac{\tau + t_d}{c_{A0} * S_P * X_A} =  \pySI{Vr}{\liter}
+\end{equation}
+\end{solution}

@@ -1,0 +1,88 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage{fullpage, enumitem, amsmath, amssymb, graphicx, chemformula, stmaryrd, physics, booktabs, float, xfrac, mdframed, blindtext, fancyhdr, pythontex, makecell}
+\usepackage[left=20mm,right=20mm,top=15mm,bottom=15mm,includeheadfoot]{geometry}
+
+\DeclareMathSymbol{*}{\mathbin}{symbols}{"01}
+
+\usepackage{siunitx}
+\sisetup{round-mode=places, round-precision=3}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+
+\usepackage[notextcomp]{kpfonts}
+
+\newcounter{question}[question]
+\setcounter{question}{1}
+
+\mdfdefinestyle{question}{
+backgroundcolor=black!10, roundcorner=8pt, hidealllines=true, nobreak
+}
+
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
+
+\fancypagestyle{plain}{
+\fancyhf{}%
+\fancyhead[R]{}
+\fancyhead[L]{}
+\fancyhead[C]{}
+\fancyfoot[R]{\thepage} 
+\fancyfoot[C]{}
+\fancyfoot[L]{Chemical Reaction Engineering}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\headrulewidth}{0pt}
+}
+
+\newenvironment{question}
+    {\textbf{Question\;\thequestion}
+    \begin{mdframed}[style=question]}
+        %% Question Text %%   
+    {\end{mdframed}
+    \addtocounter{question}{1}} 
+    
+\newenvironment{solution}
+    {}
+        %% Solution Text %%   
+    {\setcounter{equation}{0}
+    \newpage} 
+   
+    
+\title{Chemical Reaction Engineering Exam - WS2020}
+\author{Fabian Hofmann -- \texttt{fabian.hofmann@jku.at}}
+
+\setlength{\parindent}{0pt}
+\definecolor{myblue}{cmyk}{1,.72,0,.38}
+
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {1ex}%
+                                {0.5ex}%x
+                                {\color{myblue}\Large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{1}{0mm}%
+                                {0.5ex}%
+                                {0.5ex}%x
+                                {\large\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{1}{0mm}%
+                                {0.5ex}%
+                                {0.5ex}%x
+                                {\bfseries}}
+\makeatother
+
+\begin{document}
+
+\newcommand{\pySI}[2]{\py{'\\SI{' + str(#1) + '}{#2}'}}
+\newcommand{\pyNum}[1]{\py{'\\num{' + str(#1) + '}'}}
+
+\pagestyle{plain}
+\maketitle
+
+\input{Questions/question_1}
+\input{Questions/question_2}
+\input{Questions/question_3}
+\input{Questions/question_4}
+\input{Questions/question_5}
+\input{Questions/question_6}
+\input{Questions/question_7}
+
+\end{document}
