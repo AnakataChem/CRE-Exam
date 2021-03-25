@@ -114,18 +114,14 @@ k = 1/(slope*Ha*pA)
 aBetaL = 1/(intercept*Ha*pA)
 cAflwr = Ha * pA
 =>PYTHONTEX#py#default#default#12#i####question_8.tex#92#
-'\\SI{' + str(slope) + '}{\second }'
-=>PYTHONTEX#py#default#default#13#i####question_8.tex#92#
 '\\SI{' + str(k) + '}{\liter \per \mole \second }'
-=>PYTHONTEX#py#default#default#14#i####question_8.tex#98#
-'\\SI{' + str(intercept) + '}{\liter \second \per \mole }'
-=>PYTHONTEX#py#default#default#15#i####question_8.tex#98#
+=>PYTHONTEX#py#default#default#13#i####question_8.tex#100#
 '\\SI{' + str(aBetaL) + '}{\per \second }'
-=>PYTHONTEX#py#default#default#16#i####question_8.tex#117#
+=>PYTHONTEX#py#default#default#14#i####question_8.tex#121#
 '\\SI{' + str(cAflwr) + '}{\mole \per \liter }'
-=>PYTHONTEX#py#default#default#16#i####question_8.tex#117#
+=>PYTHONTEX#py#default#default#14#i####question_8.tex#121#
 '\\SI{' + str(cAflwr) + '}{\mole \per \liter }'
-=>PYTHONTEX#py#default#default#17#code####question_9.tex#24#
+=>PYTHONTEX#py#default#default#15#code####question_9.tex#24#
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
@@ -199,13 +195,13 @@ pd.DataFrame(exportDfKBr).to_csv("Tables/tabkBr.csv", index=False, header=False)
 
 exportPolyTime = pd.DataFrame({'T': T, 'PolyTime': PolyTime})
 pd.DataFrame(exportPolyTime).to_csv("Tables/polytime.csv", index=False, header=False)
-=>PYTHONTEX#py#default#default#18#i####question_9.tex#182#
+=>PYTHONTEX#py#default#default#16#i####question_9.tex#182#
 '\\SI{' + str(1e-3 * Ebr) + '}{\kilo \joule }'
-=>PYTHONTEX#py#default#default#19#i####question_9.tex#188#
+=>PYTHONTEX#py#default#default#17#i####question_9.tex#188#
 '\\SI{' + str(kBrInf) + '}{\liter \pow {1\per 2} \per \mole \pow {1\per 2} \per \second }'
-=>PYTHONTEX#py#default#default#20#i####question_9.tex#194#
+=>PYTHONTEX#py#default#default#18#i####question_9.tex#194#
 '\\SI{' + str(1e-3 * Ez) + '}{\kilo \joule }'
-=>PYTHONTEX#py#default#default#21#i####question_9.tex#200#
+=>PYTHONTEX#py#default#default#19#i####question_9.tex#200#
 '\\SI[scientific-notation=true]{' + str(kzInf) + '}{\liter \pow {1\per 2} \per \mole \pow {1\per 2} \per \second }'
 =>PYTHONTEX:SETTINGS#
 version=0.18dev

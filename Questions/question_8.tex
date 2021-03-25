@@ -62,7 +62,7 @@ The rate of such a type of reaction is defined by:
 Rearranging Eq. \ref{eqn8:rate} leads to:
 %%
 \begin{equation}
- \frac{1}{r} = \underbrace{\frac{1}{k * H_A * p_A}}_{\text{slope}} * \frac{1}{c_{B,fl}} + \underbrace{\frac{1}{H_A * p_A * a * \beta_L}}_{\text{intercept}}
+ \frac{1}{r} = \underbrace{\frac{1}{k * H_A * p_A}}_{\text{slope } m} * \frac{1}{c_{B,fl}} + \underbrace{\frac{1}{H_A * p_A * a * \beta_L}}_{\text{intercept } d}
 \end{equation}
 %%
 The slope and intercept can be determined by a linear regression $r^{-1} = f\left(c_{B,fl}^{-1}\right)$.
@@ -86,17 +86,21 @@ display columns/3/.style={column name={$\sfrac{r^{-1}}{\si{\liter\second\per\mol
 \input{Plots/plot_rate}
 \end{center}
 %%
-The rate constant $k$ can be calculated by:
+The rate constant $k$ can be calculated by ($[m] = \si{second}$):
 %%
 \begin{equation}
- k = \frac{1}{\pySI{slope}{\second} * H_A * p_A} = \pySI{k}{\liter\per\mole\second}
+ k = \frac{1}{m * H_A * p_A} = \pySI{k}{\liter\per\mole\second}
 \end{equation}
 %%
-The product of the specific interface and the mass transport coefficient $a * \beta_L$ can be calculated by:
+The product of the specific interface and the mass transport coefficient $a * \beta_L$ can be calculated by ($[d] = \si{\liter\second\per\mole}$):
 %%
+\begingroup 
+\sisetup{round-precision=4}
 \begin{equation}
- a * \beta_L = \frac{1}{\pySI{intercept}{\liter\second\per\mole} * H_A * p_A} = \pySI{aBetaL}{\per\second}
+ a * \beta_L = \frac{1}{d * H_A * p_A} = \pySI{aBetaL}{\per\second}
 \end{equation}
+\endgroup
+
 %%
 The concentration of the gas A in the liquid can by rearranging the mass balance $ \dot{n}_{diff} = \dot{n}_{rxn}$:
 %%
