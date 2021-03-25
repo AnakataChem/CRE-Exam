@@ -1,15 +1,19 @@
 \documentclass[12pt]{article}
 \usepackage[english]{babel}
-\usepackage{fullpage, enumitem, amsmath, amssymb, graphicx, chemformula, stmaryrd, physics, booktabs, float, xfrac, mdframed, blindtext, fancyhdr, pythontex, makecell}
+\usepackage{fullpage, enumitem, amsmath, amssymb, graphicx, chemformula, stmaryrd, physics, booktabs, float, xfrac, mdframed, blindtext, fancyhdr, pythontex, makecell, pgfplotstable, caption}
 \usepackage[left=20mm,right=20mm,top=15mm,bottom=15mm,includeheadfoot]{geometry}
 
 \DeclareMathSymbol{*}{\mathbin}{symbols}{"01}
 
 \usepackage{siunitx}
 \sisetup{round-mode=places, round-precision=3}
+\newcommand{\pow}[1]{\tothe{#1}}
 
 \usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
 \usepgfplotslibrary{groupplots}
+\usetikzlibrary{matrix,calc}
+
 
 \usepackage[notextcomp]{kpfonts}
 
@@ -45,10 +49,11 @@ backgroundcolor=black!10, roundcorner=8pt, hidealllines=true, nobreak
     {}
         %% Solution Text %%   
     {\setcounter{equation}{0}
+     \setcounter{table}{0}
     \newpage} 
    
     
-\title{Chemical Reaction Engineering Exam - WS2020}
+\title{Chemical Reaction Engineering - Exam Questions}
 \author{Fabian Hofmann -- \texttt{fabian.hofmann@jku.at}}
 
 \setlength{\parindent}{0pt}
@@ -73,6 +78,8 @@ backgroundcolor=black!10, roundcorner=8pt, hidealllines=true, nobreak
 
 \newcommand{\pySI}[2]{\py{'\\SI{' + str(#1) + '}{#2}'}}
 \newcommand{\pyNum}[1]{\py{'\\num{' + str(#1) + '}'}}
+\newcommand{\pySIsci}[2]{\py{'\\SI[scientific-notation=true]{' + str(#1) + '}{#2}'}}
+
 
 \pagestyle{plain}
 \maketitle
@@ -84,5 +91,12 @@ backgroundcolor=black!10, roundcorner=8pt, hidealllines=true, nobreak
 \input{Questions/question_5}
 \input{Questions/question_6}
 \input{Questions/question_7}
-
+\input{Questions/question_8}
+\input{Questions/question_9}
+\input{Questions/question_10}
+\input{Questions/question_11}
+\input{Questions/question_12}
+\input{Questions/question_13}
+\input{Questions/question_14}
+\input{Questions/question_15}
 \end{document}

@@ -1,0 +1,49 @@
+\begin{question}
+A heterogeneously catalysed reaction of two gaseous reactants (\ch{A + B}) to the product C shows \textbf{Eley-Rideal} kinetics. In an experiment, the partial pressure of component B is kept constant, while that of component A is steadily increased. Describe the course of the reaction rate and explain it using a suitable formula.  For this purpose, assign the areas of the curve exactly to the explained cases (in the diagram)! 
+
+\end{question}
+\begin{solution}
+The Eley-Rideal model states that one reactant is chemisorpt on the surface of the catalyst.
+%%
+\begin{equation*}
+\ch{A_{ch} + B_{g} -> C}
+\end{equation*}
+%%
+The reaction rate can be described by:
+%%
+\begin{equation}
+r = k * \Theta_A * p_B
+\end{equation}
+%%
+The coverage $\Theta$ can be calculated by:
+%%
+\begin{equation}
+\Theta_A = \frac{K_A * p_A}{1 + K_A * p_A}
+\end{equation}
+%%
+Thus the reaction rate can be rearranged to:
+%%
+\begin{equation}\label{eqn14:rate}
+r = k * \frac{K_A * p_A * p_B}{1 + K_A * p_A}
+\end{equation}
+%%
+In the case of a low partial pressure of A $(K_A * p_A \ll 1)$, Eq. \ref{eqn14:rate} can be simplified to:
+%%
+\begin{equation}
+r = k * K_A *  p_A * p_B
+\end{equation}
+%%
+The reaction is 2nd order and the rate behaves 1st order in $p_A$. 
+
+In the case of a high partial pressure of A $(K_A * p_A \gg 1)$, Eq. \ref{eqn14:rate} can be simplified to:
+%%
+\begin{equation}
+r = k * p_B 
+\end{equation}
+%%
+The reaction is 1st order and the rate behaves zero order in $p_A$. 
+%%
+\begin{center}
+\input{Plots/plot_ER.tex}
+\end{center}
+\end{solution}

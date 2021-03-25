@@ -1,0 +1,36 @@
+% This file was created by tikzplotlib v0.9.8.
+\pgfkeys{/pgf/number format/.cd,1000 sep={\:}}
+\begin{tikzpicture}
+\begin{axis}[
+height=9cm,
+legend cell align={left},
+legend pos=north west,
+width=10cm,
+xlabel={$ c_{B,fl}^{-1}\: / \: \si{\liter\per\mole}$},
+xmin=-1.825, xmax=41.9916666666667,
+ylabel={$r^{-1}\: / \: \si{\liter\second\per\mole}$},
+ymin=231.206530949541, ymax=2298.21657434581,
+]
+\addplot [draw=blue, fill=blue, mark=*, only marks]
+table{%
+x  y
+40 2204.26157237326
+6.66666666666667 631.778456354638
+1.66666666666667 395.908940943583
+0.833333333333333 356.612184249629
+0.25 329.109758104328
+0.166666666666667 325.168003468459
+};
+\addlegendentry{Data}
+\addplot [semithick, red]
+table {%
+40 2204.25883169654
+6.66666666666667 631.792472889477
+1.66666666666667 395.922519068417
+0.833333333333333 356.61086009824
+0.25 329.092698819116
+0.166666666666667 325.161532922099
+};
+\addlegendentry{$y=47.17x+317.30$}
+\end{axis}
+\end{tikzpicture}

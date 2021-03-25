@@ -1,0 +1,234 @@
+=>PYTHONTEX#py#default#default#0#code####question_1.tex#13#
+import numpy as np
+import sympy as sp
+
+# Given data
+Fw = 7 #m^2
+cA0 = 1600 #mol/m^3
+Vdot = 2.3 #m^3/h
+Ta = 70 #°C
+T = 118 #°C
+Tk = 95 #°C
+X = 0.98 #%
+kW = 4.75e5 #J/(m^2 h K)
+DeltaH = -195 #kJ/mol
+rho = 1809 #kg/m^3
+cp = 2200 #J/(K kg)
+
+#Calculation of the adibatic temperature increase
+DeltaTad = (-1000 * DeltaH * cA0)/(rho * cp)
+
+#Calculation of the Stanton number
+St = (Ta - T + DeltaTad * X)/(T - Tk)
+
+#Calculation of the needed heat exchange surface
+FwNeed = (St * Vdot * rho * cp)/kW
+
+#Calculation of the heat exchange surface which has to be added
+FwAdd = FwNeed - Fw
+
+=>PYTHONTEX#py#default#default#1#i####question_1.tex#54#
+'\\SI{' + str(DeltaTad) + '}{\kelvin }'
+=>PYTHONTEX#py#default#default#2#i####question_1.tex#60#
+'\\num{' + str(St) + '}'
+=>PYTHONTEX#py#default#default#3#i####question_1.tex#66#
+'\\SI{' + str(FwAdd) + '}{\square \meter }'
+=>PYTHONTEX#py#default#default#4#code####question_2.tex#10#
+import numpy as np
+import sympy as sp
+
+t = sp.symbols('t', positive=True, real=True)
+
+# Given data
+T = 125 + 273.15 #K
+cI0 = 0.001 #mol/L
+kz = 1.09e-11 #s^-1
+kBr = 3.09e-3 #L^0.5 mol^-0.5 s^-1
+X = 0.7
+
+# Calculation of the polymerization time
+sol = sp.solve((2 * kBr * sp.sqrt(cI0)) / kz * (sp.exp(-kz * t / 2) - 1) - sp.log(1 - X), t)
+=>PYTHONTEX#py#default#default#5#i####question_2.tex#47#
+'\\SI{' + str(sol[0]) + '}{\second }'
+=>PYTHONTEX#py#default#default#5#i####question_2.tex#47#
+'\\SI{' + str(sol[0]) + '}{\second }'
+=>PYTHONTEX#py#default#default#6#code####question_3.tex#18#
+# Given data
+Mp = 116 #g mol^-1
+Xa = 0.69
+Sp = 1
+mDot = 109 #kg h^-1
+k = 0.03 #L mol^-1 min^-1
+cA0 = 2 #mol/L
+tD = 15 #min
+
+# Calculation of the Damkoehler number
+Da = Xa/(1-Xa)
+
+# Calculation of the residence time
+tau = Da/(k * cA0)
+
+# Calculation of the reaction volume
+Vr = 1000/60 * mDot/Mp * (tau + tD)/(cA0*Sp*Xa)
+=>PYTHONTEX#py#default#default#7#i####question_3.tex#46#
+'\\num{' + str(Da) + '}'
+=>PYTHONTEX#py#default#default#7#i####question_3.tex#46#
+'\\num{' + str(Da) + '}'
+=>PYTHONTEX#py#default#default#8#i####question_3.tex#51#
+'\\SI{' + str(tau) + '}{\minute }'
+=>PYTHONTEX#py#default#default#9#i####question_3.tex#78#
+'\\SI{' + str(Vr) + '}{\liter }'
+=>PYTHONTEX#py#default#default#10#code####question_4.tex#12#
+
+=>PYTHONTEX#py#default#default#11#code####question_8.tex#20#
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+import tikzplotlib
+
+pA = 1500e2 #Pa
+Ha = 3.89e-6 #mol/(L*Pa)
+
+cBfl = 1e-3*np.array([25, 150, 600, 1200, 4000, 6000]) # mol/L
+r = 1e-6*1/60*np.array([27220, 94970, 151550, 168250, 182310, 184520]) #mol/(L*s)
+
+# Creating a 2 dimensional numpy array
+data = np.array([cBfl, r, 1/cBfl, 1/r])
+
+# Creating pandas dataframe from numpy array
+dataset = pd.DataFrame({'cB': data[0, :], 'r': data[1, :], '1overCb': data[2, :], '1overR': data[3, :]})
+pd.DataFrame(dataset).to_csv("Tables/rateconc.csv", index=False, header=False)
+
+X = dataset.iloc[:, 0].values.reshape(-1, 1)  # values converts it into a numpy array
+Y = dataset.iloc[:, 1].values.reshape(-1, 1)  # -1 means that calculate the dimension of rows,
+
+linear_regressor = LinearRegression()  # create object for the class
+linear_regressor.fit(1/X, 1/Y)         # perform linear regression
+Y_pred = linear_regressor.predict(1/X) # make predictions
+
+intercept = linear_regressor.intercept_[0]
+slope = linear_regressor.coef_[0,0]
+
+k = 1/(slope*Ha*pA)
+aBetaL = 1/(intercept*Ha*pA)
+cAflwr = Ha * pA
+=>PYTHONTEX#py#default#default#12#i####question_8.tex#92#
+'\\SI{' + str(slope) + '}{\second }'
+=>PYTHONTEX#py#default#default#13#i####question_8.tex#92#
+'\\SI{' + str(k) + '}{\liter \per \mole \second }'
+=>PYTHONTEX#py#default#default#14#i####question_8.tex#98#
+'\\SI{' + str(intercept) + '}{\liter \second \per \mole }'
+=>PYTHONTEX#py#default#default#15#i####question_8.tex#98#
+'\\SI{' + str(aBetaL) + '}{\per \second }'
+=>PYTHONTEX#py#default#default#16#i####question_8.tex#117#
+'\\SI{' + str(cAflwr) + '}{\mole \per \liter }'
+=>PYTHONTEX#py#default#default#16#i####question_8.tex#117#
+'\\SI{' + str(cAflwr) + '}{\mole \per \liter }'
+=>PYTHONTEX#py#default#default#17#code####question_9.tex#24#
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+R = 8.3144598 #J/(mol*K)
+
+T = np.array([80, 100, 120]) #celsius
+Tkelvin = np.array([80, 100, 120]) + 273.15 #K
+kz = np.array([4.454e-13, 6.01e-12, 1.275e-11]) #s^-1
+cI0 = 0.002 #mol/L
+X = 0.75
+
+t = 60*np.array([0, 50, 100, 150, 200, 300]) #s
+cmT1 = 1e-3*np.array([1500, 1450, 1400, 1350, 1300, 1200]) #mol/L
+cmT2 = 1e-3*np.array([1500, 1300, 1100, 950, 800, 600]) #mol/L
+cmT3 = 1e-3*np.array([1500, 900, 550, 300, 200, 70]) #mol/L
+
+df = pd.DataFrame({'t':t, 'cmT1':cmT1, 'cmT2':cmT2, 'cmT3':cmT3})
+
+cM0 = df['cmT1'].values.reshape(-1,1)[0,0]
+
+lm1 = LinearRegression()
+lm2 = LinearRegression()
+lm3 = LinearRegression()
+
+Y1 = np.log(df['cmT1'].values.reshape(-1,1)/cM0)
+X1 = np.exp(-kz[0]*df['t'].values.reshape(-1,1)/2) - 1
+lm1.fit(X1, Y1)         # perform linear regression
+Ypred1 =lm1.predict(X1) # make predictions
+slope1 = lm1.coef_[0,0]
+
+Y2 = np.log(df['cmT2'].values.reshape(-1,1)/cM0)
+X2 = np.exp(-kz[1]*df['t'].values.reshape(-1,1)/2) - 1
+lm2.fit(X2, Y2)         # perform linear regression
+Ypred2 = lm2.predict(X2) # make predictions
+slope2 = lm1.coef_[0,0]
+
+Y3 = np.log(df['cmT3'].values.reshape(-1,1)/cM0)
+X3 = np.exp(-kz[2]*df['t'].values.reshape(-1,1)/2) - 1
+lm3.fit(X3, Y3)         # perform linear regression
+Ypred3 = lm3.predict(X3) # make predictions
+slope3 = lm1.coef_[0,0]
+
+kBr1 = slope1*kz[0]/(2*np.sqrt(cI0))
+kBr2 = slope2*kz[1]/(2*np.sqrt(cI0))
+kBr3 = slope3*kz[2]/(2*np.sqrt(cI0))
+kBr = np.array([kBr1, kBr2, kBr3])
+
+Ebr = R * np.log(kBr[0]/kBr[1]) * Tkelvin[0] * Tkelvin[1]/(Tkelvin[0] - Tkelvin[1])
+Ez = R * np.log(kz[0]/kz[1]) * Tkelvin[0] * Tkelvin[1]/(Tkelvin[0] - Tkelvin[1])
+
+kBrInf = kBr[0] * np.exp(Ebr / (R * Tkelvin[0]))
+kzInf = kz[0] * np.exp(Ez / (R * Tkelvin[0]))
+
+PolyTime = -2/kz * np.log(np.log(1-X) * kz / (2 * kBr * np.sqrt(cI0)) + 1)
+
+exportDf1 = pd.DataFrame({'t': t, 'cmT1': cmT1, 'logCm': Y1.reshape(-1), 'expKz': X1.reshape(-1)})
+pd.DataFrame(exportDf1).to_csv("Tables/tab1.csv", index=False, header=False)
+
+exportDf2 = pd.DataFrame({'t': t, 'cmT2': cmT2, 'logCm': Y2.reshape(-1), 'expKz': X2.reshape(-1)})
+pd.DataFrame(exportDf2).to_csv("Tables/tab2.csv", index=False, header=False)
+
+exportDf3 = pd.DataFrame({'t': t, 'cmT3': cmT3, 'logCm': Y3.reshape(-1), 'expKz': X3.reshape(-1)})
+pd.DataFrame(exportDf3).to_csv("Tables/tab3.csv", index=False, header=False)
+
+exportDfKz = pd.DataFrame({'T': T, 'kz': kz})
+pd.DataFrame(exportDfKz).to_csv("Tables/tabkz.csv", index=False, header=False)
+
+exportDfKBr = pd.DataFrame({'T': T, 'kBr': kBr})
+pd.DataFrame(exportDfKBr).to_csv("Tables/tabkBr.csv", index=False, header=False)
+
+exportPolyTime = pd.DataFrame({'T': T, 'PolyTime': PolyTime})
+pd.DataFrame(exportPolyTime).to_csv("Tables/polytime.csv", index=False, header=False)
+=>PYTHONTEX#py#default#default#18#i####question_9.tex#182#
+'\\SI{' + str(1e-3 * Ebr) + '}{\kilo \joule }'
+=>PYTHONTEX#py#default#default#19#i####question_9.tex#188#
+'\\SI{' + str(kBrInf) + '}{\liter \pow {1\per 2} \per \mole \pow {1\per 2} \per \second }'
+=>PYTHONTEX#py#default#default#20#i####question_9.tex#194#
+'\\SI{' + str(1e-3 * Ez) + '}{\kilo \joule }'
+=>PYTHONTEX#py#default#default#21#i####question_9.tex#200#
+'\\SI[scientific-notation=true]{' + str(kzInf) + '}{\liter \pow {1\per 2} \per \mole \pow {1\per 2} \per \second }'
+=>PYTHONTEX:SETTINGS#
+version=0.18dev
+outputdir=pythontex-files-main
+workingdir=.
+workingdirset=false
+gobble=none
+rerun=default
+hashdependencies=default
+makestderr=false
+stderrfilename=full
+keeptemps=none
+pyfuture=default
+pyconfuture=none
+pygments=true
+pygglobal=:GLOBAL||
+fvextfile=-1
+pyconbanner=none
+pyconfilename=stdin
+depythontex=false
+pygfamily=py|python3|
+pygfamily=pycon|pycon|
+pygfamily=sympy|python3|
+pygfamily=sympycon|pycon|
+pygfamily=pylab|python3|
+pygfamily=pylabcon|pycon|

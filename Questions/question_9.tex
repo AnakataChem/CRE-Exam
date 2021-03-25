@@ -1,0 +1,232 @@
+\begin{question}
+During the execution of a radical polymerization at three different temperatures, the following data were collected for the respective course of the monomer concentration $c_M$. In addition the rate constants of the initiator decomposition reaction $k_z$ determined in kinetic investigations performed previously are available. The initial initiator concentrations are also given $c_{I0} = \SI{0.002}{\mole\per\liter}$.
+%%
+\renewcommand{\labelenumi}{\alph{enumi})}
+\begin{enumerate}
+\item Determine the activation energies $E_z$ and $E_{Br}$ as well the corresponding pre-exponential factors $k_{z\infty}$ and $k_{Br\infty}$.
+\item Calculate for the different temperatures the polymerization time until a monomer conversion of \SI{75}{\percent} is reached.
+\end{enumerate}
+%%
+\begin{table}[H]
+\centering
+\pgfplotstabletypeset[%
+col sep=comma, header=false,
+every head row/.style={before row={\toprule}, after row={\midrule}},
+every last row/.style={after row=\bottomrule},
+display columns/0/.style={column name={$\sfrac{T}{\si{\celsius}}$}, string type, column type={S[table-format=3]}},
+display columns/1/.style={column name={$\sfrac{k_z}{\si{\per\second}}$}, string type, column type={S[scientific-notation=true, round-precision=3, table-format=1.3e-2]}},
+]{Tables/tabkz.csv}
+\end{table}
+%%
+The values for the time $t$ and monomer concentration $c_M$ are given in Tab. \ref{tab9:1} to \ref{tab9:3}.
+\end{question}
+
+\begin{pycode}
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+R = 8.3144598 #J/(mol*K)
+
+T = np.array([80, 100, 120]) #celsius
+Tkelvin = np.array([80, 100, 120]) + 273.15 #K
+kz = np.array([4.454e-13, 6.01e-12, 1.275e-11]) #s^-1
+cI0 = 0.002 #mol/L
+X = 0.75
+
+t = 60*np.array([0, 50, 100, 150, 200, 300]) #s
+cmT1 = 1e-3*np.array([1500, 1450, 1400, 1350, 1300, 1200]) #mol/L
+cmT2 = 1e-3*np.array([1500, 1300, 1100, 950, 800, 600]) #mol/L
+cmT3 = 1e-3*np.array([1500, 900, 550, 300, 200, 70]) #mol/L
+
+df = pd.DataFrame({'t':t, 'cmT1':cmT1, 'cmT2':cmT2, 'cmT3':cmT3})
+
+cM0 = df['cmT1'].values.reshape(-1,1)[0,0]
+
+lm1 = LinearRegression()
+lm2 = LinearRegression()
+lm3 = LinearRegression()
+
+Y1 = np.log(df['cmT1'].values.reshape(-1,1)/cM0)
+X1 = np.exp(-kz[0]*df['t'].values.reshape(-1,1)/2) - 1 
+lm1.fit(X1, Y1)         # perform linear regression
+Ypred1 =lm1.predict(X1) # make predictions
+slope1 = lm1.coef_[0,0]
+
+Y2 = np.log(df['cmT2'].values.reshape(-1,1)/cM0)
+X2 = np.exp(-kz[1]*df['t'].values.reshape(-1,1)/2) - 1 
+lm2.fit(X2, Y2)         # perform linear regression
+Ypred2 = lm2.predict(X2) # make predictions
+slope2 = lm1.coef_[0,0]
+
+Y3 = np.log(df['cmT3'].values.reshape(-1,1)/cM0)
+X3 = np.exp(-kz[2]*df['t'].values.reshape(-1,1)/2) - 1 
+lm3.fit(X3, Y3)         # perform linear regression
+Ypred3 = lm3.predict(X3) # make predictions
+slope3 = lm1.coef_[0,0]
+
+kBr1 = slope1*kz[0]/(2*np.sqrt(cI0))
+kBr2 = slope2*kz[1]/(2*np.sqrt(cI0))
+kBr3 = slope3*kz[2]/(2*np.sqrt(cI0))
+kBr = np.array([kBr1, kBr2, kBr3])
+
+Ebr = R * np.log(kBr[0]/kBr[1]) * Tkelvin[0] * Tkelvin[1]/(Tkelvin[0] - Tkelvin[1])
+Ez = R * np.log(kz[0]/kz[1]) * Tkelvin[0] * Tkelvin[1]/(Tkelvin[0] - Tkelvin[1])
+
+kBrInf = kBr[0] * np.exp(Ebr / (R * Tkelvin[0]))
+kzInf = kz[0] * np.exp(Ez / (R * Tkelvin[0]))
+
+PolyTime = -2/kz * np.log(np.log(1-X) * kz / (2 * kBr * np.sqrt(cI0)) + 1)
+
+exportDf1 = pd.DataFrame({'t': t, 'cmT1': cmT1, 'logCm': Y1.reshape(-1), 'expKz': X1.reshape(-1)})
+pd.DataFrame(exportDf1).to_csv("Tables/tab1.csv", index=False, header=False)
+
+exportDf2 = pd.DataFrame({'t': t, 'cmT2': cmT2, 'logCm': Y2.reshape(-1), 'expKz': X2.reshape(-1)})
+pd.DataFrame(exportDf2).to_csv("Tables/tab2.csv", index=False, header=False)
+
+exportDf3 = pd.DataFrame({'t': t, 'cmT3': cmT3, 'logCm': Y3.reshape(-1), 'expKz': X3.reshape(-1)})
+pd.DataFrame(exportDf3).to_csv("Tables/tab3.csv", index=False, header=False)
+
+exportDfKz = pd.DataFrame({'T': T, 'kz': kz})
+pd.DataFrame(exportDfKz).to_csv("Tables/tabkz.csv", index=False, header=False)
+
+exportDfKBr = pd.DataFrame({'T': T, 'kBr': kBr})
+pd.DataFrame(exportDfKBr).to_csv("Tables/tabkBr.csv", index=False, header=False)
+
+exportPolyTime = pd.DataFrame({'T': T, 'PolyTime': PolyTime})
+pd.DataFrame(exportPolyTime).to_csv("Tables/polytime.csv", index=False, header=False)
+\end{pycode}
+
+\begin{solution}
+The logarithmic ratio of the monomer concentration to the initial concentration can be calculated by:
+%
+\begin{equation}\label{eqn9:logratio}
+\ln \left( \frac{c_M}{c_{M0}} \right) = \underbrace{\frac{2 * k_{Br} * \sqrt{c_{I0}}}{k_z}}_{\text{slope } m}  * \left[ \exp\left(\frac{-k_z * t}{2} \right) - 1 \right]
+\end{equation}
+%%
+The slope can be determined by linear regression $\ln \left( \frac{c_M}{c_{M0}} \right) = f\left(\exp\left(\frac{-k_z * t}{2} \right) - 1\right)$. The gross rate constant can be calculated by:
+%%
+\begin{equation}\label{eqn9:kbr}
+ k_{Br} = \frac{m * k_z}{2 * \sqrt{c_{I0}}}
+\end{equation}
+%%
+Tab. \ref{tab9:1} to \ref{tab9:3} contain the results of the calculation of the slope and the logarithmic ratio
+\begin{table}[H]
+\caption{At \SI{80}{\celsius}}
+\label{tab9:1}
+\centering
+\pgfplotstabletypeset[%
+col sep=comma, header=false,
+every head row/.style={before row={\toprule}, after row={\midrule}},
+every last row/.style={after row=\bottomrule},
+display columns/0/.style={column name={$\sfrac{t}{\si{\second}}$}, string type, column type={S[table-format=5]}},
+display columns/1/.style={column name={$\sfrac{c_M}{\si{\mole\per\liter}}$}, string type, column type={S[round-precision=2, table-format=1.2]}},
+display columns/2/.style={column name={${\ln\left(\frac{c_M}{c_{M0}}\right)}$}, string type, column type={S[scientific-notation=true, round-precision=2, table-format=-1.2e-1]}},
+display columns/3/.style={column name={${\exp\left(\frac{-k_z * t}{2}\right) - 1}$}, string type, column type={S[scientific-notation=true, round-precision=2, table-format=-1.2e-2]}},
+]{Tables/tab1.csv}
+\end{table}
+%%
+\begin{table}[H]
+\centering
+\caption{At \SI{100}{\celsius}}
+\label{tab9:2}
+\pgfplotstabletypeset[%
+col sep=comma, header=false,
+every head row/.style={before row={\toprule}, after row={\midrule}},
+every last row/.style={after row=\bottomrule},
+display columns/0/.style={column name={$\sfrac{t}{\si{\second}}$}, string type, column type={S[table-format=5]}},
+display columns/1/.style={column name={$\sfrac{c_M}{\si{\mole\per\liter}}$}, string type, column type={S[round-precision=2, table-format=1.2]}},
+display columns/2/.style={column name={${\ln\left(\frac{c_M}{c_{M0}}\right)}$}, string type, column type={S[scientific-notation=true, round-precision=2, table-format=-1.2e-1]}},
+display columns/3/.style={column name={${\exp\left(\frac{-k_z * t}{2}\right) - 1}$}, string type, column type={S[scientific-notation=true, round-precision=2, table-format=-1.2e-2]}},
+]{Tables/tab2.csv}
+\end{table}
+%%
+\begin{table}[H]
+\centering
+\caption{At \SI{120}{\celsius}}
+\label{tab9:3}
+\pgfplotstabletypeset[%
+col sep=comma, header=false,
+every head row/.style={before row={\toprule}, after row={\midrule}},
+every last row/.style={after row=\bottomrule},
+display columns/0/.style={column name={$\sfrac{t}{\si{\second}}$}, string type, column type={S[table-format=5]}},
+display columns/1/.style={column name={$\sfrac{c_M}{\si{\mole\per\liter}}$}, string type, column type={S[round-precision=2, table-format=1.2]}},
+display columns/2/.style={column name={${\ln\left(\frac{c_M}{c_{M0}}\right)}$}, string type, column type={S[round-precision=2, table-format=-1.2]}},
+display columns/3/.style={column name={${\exp\left(\frac{-k_z * t}{2}\right)-1}$}, string type, column type={S[scientific-notation=true, round-precision=2, table-format=-1.2e-2]}},
+]{Tables/tab3.csv}
+\end{table}
+%%
+Determined regression lines:
+%%
+\begin{center}
+ \input{Plots/plot_exp.tex}
+\end{center}
+%%
+The gross rate constants from Eq. \ref{eqn9:kbr}:
+%%
+\begin{table}[H]
+\centering
+\caption{Gross reaction constants.}
+\pgfplotstabletypeset[%
+col sep=comma, header=false,
+every head row/.style={before row={\toprule}, after row={\midrule}},
+every last row/.style={after row=\bottomrule},
+display columns/0/.style={column name={$\sfrac{T}{\si{\celsius}}$}, string type, column type={S[table-format=3]}},
+display columns/1/.style={column name={$\sfrac{k_{Br}}{\si{\liter\tothe{1\per 2}\per\mole\tothe{1\per 2}\per\second}}$}, string type, column type={S[scientific-notation=true, round-precision=3, table-format=1.3e-2]}},
+]{Tables/tabkBr.csv}
+\end{table}
+%%
+The activation energy for the gross reaction reaction can be calculated by (temperature in kelvin):
+%%
+\begin{equation}
+ E_{Br} = R * \ln\left[\frac{k_{Br}(T_1)}{k_{Br}(T_2)}\right] * \frac{T_1 * T_2}{T_1 - T_2} = \pySI{1e-3 * Ebr}{\kilo\joule}
+\end{equation}
+%%
+The pre-exponential factor for the gross reaction can be calculated by:
+%%
+\begin{equation}
+ k_{Br\infty} = k_{Br}(T_1) * \exp\left(\frac{E_{Br}}{R * T_1}\right) = \pySI{kBrInf}{\liter \pow{1\per 2} \per \mole \pow{1\per 2} \per \second}
+\end{equation}
+%%
+The activation energy for the initiator decomposition reaction can be calculated by:
+%%
+\begin{equation}
+ E_{z} = R * \ln\left[\frac{k_{z}(T_1)}{k_{z}(T_2)}\right] * \frac{T_1 * T_2}{T_1 - T_2} = \pySI{1e-3 * Ez}{\kilo\joule}
+\end{equation}
+%%
+The pre-exponential factor for the initiator decomposition reaction  can be calculated by:
+%%
+\begin{equation}
+ k_{z\infty} = k_{z}(T_1) * \exp\left(\frac{E_{z}}{R * T_1}\right) = \pySIsci{kzInf}{\liter \pow{1\per 2} \per \mole \pow{1\per 2} \per \second}
+\end{equation}
+%%
+The conversion in constant reaction volume is defined by:
+%
+\begin{equation}
+X = \frac{c_{M0} - c_M}{c_{M0}} \Longrightarrow \frac{c_M}{c_{M0}} = 1 - X
+\end{equation}
+%
+Thus the polymerization time $t_p$ for a monomer conversion of \SI{75}{\percent} can be calculated by rearranging Eq. \ref{eqn9:logratio}:
+%
+\begin{align}
+\begin{split}
+&\ln \left( 1 - X \right) = \frac{2 * k_{Br} * \sqrt{c_{I0}}}{k_z} * \left[ \exp\left(\frac{-k_z * t_p}{2} \right) - 1 \right]\\
+&\Longrightarrow t_p = -\frac{2}{k_z} * \ln \left[ \frac{\ln (1 - X) * k_z}{2 * k_{Br} * \sqrt{c_{I0}}} + 1 \right]
+\end{split} 
+\end{align}
+%%
+\begin{table}[H]
+\centering
+\caption{Polymerization times}
+\pgfplotstabletypeset[%
+col sep=comma, header=false,
+every head row/.style={before row={\toprule}, after row={\midrule}},
+every last row/.style={after row=\bottomrule},
+display columns/0/.style={column name={$\sfrac{T}{\si{\celsius}}$}, string type, column type={S[table-format=3]}},
+display columns/1/.style={column name={$\sfrac{t_p}{\si{\second}}$}, string type, column type={S[scientific-notation=true, round-precision=3, table-format=1.3e1]}},
+]{Tables/polytime.csv}
+\end{table}
+\end{solution}
+
+
+

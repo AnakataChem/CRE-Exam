@@ -1,4 +1,4 @@
-%Last time of file creation:  1616503328.0978727
+%Last time of file creation:  1616583201.4397125
 
 \pytx@SVMCR{pytx@MCR@py@default@default@1}
 \SI{78.39589929142169}{\kelvin }\endpytx@SVMCR
@@ -20,4 +20,31 @@
 
 \pytx@SVMCR{pytx@MCR@py@default@default@9}
 \SI{591.2198470657144}{\liter }\endpytx@SVMCR
+
+\pytx@SVMCR{pytx@MCR@py@default@default@12}
+\SI{47.173990764212014}{\second }\endpytx@SVMCR
+
+\pytx@SVMCR{pytx@MCR@py@default@default@13}
+\SI{0.03632925751045886}{\liter \per \mole \second }\endpytx@SVMCR
+
+\pytx@SVMCR{pytx@MCR@py@default@default@14}
+\SI{317.2992011280632}{\liter \second \per \mole }\endpytx@SVMCR
+
+\pytx@SVMCR{pytx@MCR@py@default@default@15}
+\SI{0.005401198780760155}{\per \second }\endpytx@SVMCR
+
+\pytx@SVMCR{pytx@MCR@py@default@default@16}
+\SI{0.5835}{\mole \per \liter }\endpytx@SVMCR
+
+\pytx@SVMCR{pytx@MCR@py@default@default@18}
+\SI{142.55701235776266}{\kilo \joule }\endpytx@SVMCR
+
+\pytx@SVMCR{pytx@MCR@py@default@default@19}
+\SI{3.371454324226155e+17}{\liter \pow {1\per 2} \per \mole \pow {1\per 2} \per \second }\endpytx@SVMCR
+
+\pytx@SVMCR{pytx@MCR@py@default@default@20}
+\SI{142.55701235776266}{\kilo \joule }\endpytx@SVMCR
+
+\pytx@SVMCR{pytx@MCR@py@default@default@21}
+\SI[scientific-notation=true]{542055281.9522431}{\liter \pow {1\per 2} \per \mole \pow {1\per 2} \per \second }\endpytx@SVMCR
 

@@ -1,0 +1,26 @@
+
+\begin{question}
+What is meant by stationarity in a reactor system? How does this affect the mass and heat balance?
+\end{question}
+
+\begin{solution}
+A \textbf{stationary process} describes the movement of matter or energy in which the state variables of the considered system do not change in the course of time.
+%%
+\begin{itemize}
+ \item In terms of the \textbf{mass balance}, an intermediate product of a reaction chain has a constant concentration over time during the process.
+ \item With regard to the \textbf{heat balance}, the continuous heat transport is stationary if the temperature at any point in the system is constant in time.
+\end{itemize}
+%%
+This implies mathematically for the mass balance:
+%%
+\begin{equation}
+ \frac{\mathrm{d}c_A}{\mathrm{d}t} = - \nabla * \vec{j} + \nu_A * r \overset{!}{=} 0
+\end{equation}
+%%
+And for the heat balance:
+%%
+\begin{equation}
+ \frac{\mathrm{d}(\rho * c_p * T)}{\mathrm{d}t} =  - \nabla * \vec{\dot{q}} + (-\Delta H)* r \overset{!}{=} 0 
+\end{equation}
+%%
+\end{solution}

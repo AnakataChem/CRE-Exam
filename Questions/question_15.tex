@@ -1,0 +1,34 @@
+
+\begin{question}
+To determine kinetic data, the reaction rate of chemical reaction is determined
+\renewcommand{\labelenumi}{(\alph{enumi})}
+\begin{enumerate}
+\item What is the dimension of the reaction rate?
+\item What are the dimension of the rate constant?
+\end{enumerate}
+\end{question}
+
+\begin{solution}
+The general rate law can be formulated by:
+%%
+\begin{equation}
+ r = \frac{1}{\nu_i} * \frac{\mathrm{d}c_i}{\mathrm{d}t} = k * c_i^n \qquad \text{with } [r] = \si{\mole\per\liter\per\second}
+\end{equation}
+%
+\begin{table}[H]
+ \centering
+ \caption{Rate law and dimension of $k$}
+ \begin{tabular}{l l l}
+ \toprule
+  Order & Rate law & $[k]$ \\
+  \midrule
+  0 & $r = k$               & \si{\mole\per\liter\per\second} \\
+  1 & $r = k*c_A $          & \si{\liter\per\second\per\mole} \\
+  2 & $r = k*c_A*c_B $      & \si{\square\liter\per\square\second\per\square\mole} \\
+  3 & $r = k*c_A*c_B*c_C $  & \si{\cubic\liter\per\cubic\second\per\cubic\mole} \\
+  \bottomrule
+ \end{tabular}
+\end{table}
+%%
+The rate constant of a reaction with oder $n \neq 0$ has the dimension $[k] = \si{\liter\tothe{n}\second\tothe{-n}\mole\tothe{-n}}$
+\end{solution}
